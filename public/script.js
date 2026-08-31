@@ -359,9 +359,50 @@ tabAudio.addEventListener('click', () => {
 // Download button
 downloadBtn.addEventListener('click', downloadMedia);
 
+// ─── PWA & Service Worker ─────────────────────────────────
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+let deferredPrompt = null;
+const pwaInstallBtn = document.getElementById('pwaInstallBtn');
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (pwaInstallBtn) {
+    pwaInstallBtn.style.display = 'inline-flex';
+  }
+});
+
+if (pwaInstallBtn) {
+  pwaInstallBtn.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        pwaInstallBtn.style.display = 'none';
+      }
+      deferredPrompt = null;
+    } else {
+      showToast('To install LinkGrab, use your browser menu -> "Install" or "Add to Home screen"', 'success');
+    }
+  });
+}
+
 // ─── Init ──────────────────────────────────────────────────
 createParticles();
 setupAudioPills();
 
+// Handle preset format if defined by specific landing page
+if (window.DEFAULT_FORMAT === 'audio' && tabAudio) {
+  tabAudio.click();
+}
+
 // Focus input on load
-setTimeout(() => urlInput.focus(), 500);
+setTimeout(() => {
+  if (urlInput) urlInput.focus();
+}, 500);
+

@@ -4,9 +4,15 @@ Disallow: /api/
 
 Sitemap: https://downloader-khaki.vercel.app/sitemap.xml
 
-# Crawl-delay for polite bots
+# Crawl directives for major search engine bots
 User-agent: Googlebot
 Allow: /
 
 User-agent: Bingbot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baiduspider
 Allow: /
