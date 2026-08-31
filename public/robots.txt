@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://linkgrab-six.vercel.app/sitemap.xml
+Sitemap: https://downloader-khaki.vercel.app/sitemap.xml
 
 # Crawl-delay for polite bots
 User-agent: Googlebot
